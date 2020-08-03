@@ -2,14 +2,15 @@ module.exports = {
     getBlocks() {
         return {
             brush_stamp: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -27,14 +28,15 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.stamp()'] },
             },
             start_drawing: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -45,7 +47,11 @@ module.exports = {
                 class: 'brush_control',
                 isNotFor: ['textBox'],
                 func(sprite, script) {
-                    Entry.setBasicBrush(sprite);
+                    if (sprite.brush) {
+                        sprite.brush.stop = false;
+                    } else {
+                        Entry.setBasicBrush(sprite);
+                    }
 
                     sprite.brush.moveTo(sprite.getX(), sprite.getY() * -1);
 
@@ -54,14 +60,15 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.start_drawing()'] },
             },
             stop_drawing: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -72,7 +79,7 @@ module.exports = {
                 class: 'brush_control',
                 isNotFor: ['textBox'],
                 func(sprite, script) {
-                    if (sprite.brush && sprite.shapes.length) {
+                    if (sprite.brush) {
                         sprite.brush.stop = true;
                     }
 
@@ -81,7 +88,8 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.stop_drawing()'] },
             },
             set_color: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
@@ -90,8 +98,8 @@ module.exports = {
                     },
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -121,15 +129,7 @@ module.exports = {
                         sprite.brush.rgb = rgb;
                         sprite.brush.endStroke();
                         sprite.brush.beginStroke(
-                            `rgba(${ 
-                                rgb.r 
-                            },${ 
-                                rgb.g 
-                            },${ 
-                                rgb.b 
-                            },${ 
-                                1 - sprite.brush.opacity / 100 
-                            })`
+                            `rgba(${rgb.r},${rgb.g},${rgb.b},${1 - sprite.brush.opacity / 100})`
                         );
 
                         sprite.brush.moveTo(sprite.getX(), sprite.getY() * -1);
@@ -145,9 +145,7 @@ module.exports = {
                             textParams: [
                                 {
                                     type: 'Color',
-                                    converter:
-                                        Entry.block.converters
-                                            .returnStringValueUpperCase,
+                                    converter: Entry.block.converters.returnStringValueUpperCase,
                                     codeMap: 'Entry.CodeMap.Entry.set_color[0]',
                                 },
                             ],
@@ -156,14 +154,15 @@ module.exports = {
                 },
             },
             set_random_color: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -184,15 +183,7 @@ module.exports = {
                         sprite.brush.rgb = rgb;
                         sprite.brush.endStroke();
                         sprite.brush.beginStroke(
-                            `rgba(${ 
-                                rgb.r 
-                            },${ 
-                                rgb.g 
-                            },${ 
-                                rgb.b 
-                            },${ 
-                                1 - sprite.brush.opacity / 100 
-                            })`
+                            `rgba(${rgb.r},${rgb.g},${rgb.b},${1 - sprite.brush.opacity / 100})`
                         );
 
                         sprite.brush.moveTo(sprite.getX(), sprite.getY() * -1);
@@ -202,18 +193,20 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.set_brush_color_to_random()'] },
             },
             change_thickness: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Block',
                         accept: 'string',
+                        defaultType: 'number',
                     },
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -266,18 +259,20 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.add_brush_size(%1)'] },
             },
             set_thickness: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Block',
                         accept: 'string',
+                        defaultType: 'number',
                     },
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -326,18 +321,20 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.set_brush_size(%1)'] },
             },
             change_brush_transparency: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Block',
                         accept: 'string',
+                        defaultType: 'number',
                     },
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -373,26 +370,14 @@ module.exports = {
                         Entry.setBasicBrush(sprite);
                         sprite.brush.stop = true;
                     }
-                    opacity = Entry.adjustValueWithMaxMin(
-                        sprite.brush.opacity + opacity,
-                        0,
-                        100
-                    );
+                    opacity = Entry.adjustValueWithMaxMin(sprite.brush.opacity + opacity, 0, 100);
 
                     if (sprite.brush) {
                         sprite.brush.opacity = opacity;
                         sprite.brush.endStroke();
                         const rgb = sprite.brush.rgb;
                         sprite.brush.beginStroke(
-                            `rgba(${ 
-                                rgb.r 
-                            },${ 
-                                rgb.g 
-                            },${ 
-                                rgb.b 
-                            },${ 
-                                1 - sprite.brush.opacity / 100 
-                            })`
+                            `rgba(${rgb.r},${rgb.g},${rgb.b},${1 - sprite.brush.opacity / 100})`
                         );
                         sprite.brush.moveTo(sprite.getX(), sprite.getY() * -1);
                     }
@@ -402,18 +387,20 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.add_brush_transparency(%1)'] },
             },
             set_brush_tranparency: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Block',
                         accept: 'string',
+                        defaultType: 'number',
                     },
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -451,23 +438,11 @@ module.exports = {
                     }
 
                     if (sprite.brush) {
-                        sprite.brush.opacity = Entry.adjustValueWithMaxMin(
-                            opacity,
-                            0,
-                            100
-                        );
+                        sprite.brush.opacity = Entry.adjustValueWithMaxMin(opacity, 0, 100);
                         sprite.brush.endStroke();
                         const rgb = sprite.brush.rgb;
                         sprite.brush.beginStroke(
-                            `rgba(${ 
-                                rgb.r 
-                            },${ 
-                                rgb.g 
-                            },${ 
-                                rgb.b 
-                            },${ 
-                                1 - sprite.brush.opacity / 100 
-                            })`
+                            `rgba(${rgb.r},${rgb.g},${rgb.b},${1 - sprite.brush.opacity / 100})`
                         );
                         sprite.brush.moveTo(sprite.getX(), sprite.getY() * -1);
                     }
@@ -477,14 +452,15 @@ module.exports = {
                 syntax: { js: [], py: ['Entry.set_brush_transparency(%1)'] },
             },
             brush_erase_all: {
-                color: '#FF9E20',
+                color: EntryStatic.colorSet.block.default.BRUSH,
+                outerLine: EntryStatic.colorSet.block.darken.BRUSH,
                 skeleton: 'basic',
                 statements: [],
                 params: [
                     {
                         type: 'Indicator',
-                        img: 'block_icon/brush_03.png',
-                        size: 12,
+                        img: 'block_icon/brush_icon.svg',
+                        size: 11,
                     },
                 ],
                 events: {},
@@ -496,9 +472,7 @@ module.exports = {
                 isNotFor: ['textBox'],
                 func(sprite, script) {
                     sprite.eraseBrush && sprite.eraseBrush();
-
                     sprite.removeStamps();
-
                     return script.callReturn();
                 },
                 syntax: { js: [], py: ['Entry.clear_drawing()'] },
